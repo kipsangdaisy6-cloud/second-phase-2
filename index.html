@@ -1,28 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Symptoms App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Symptom Tracker</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+  <main class="page">
+    <header class="masthead">
+      <h1>Symptom Tracker</h1>
+      <p class="lede">Write down what you are feeling. Each entry is saved with the date and time you added it.</p>
+    </header>
 
-<h1>Symptoms Tracker</h1>
+    <div id="fileWarning" class="notice" hidden>
+      This page was opened as a file, so the browser blocks the scripts it needs.
+      Run it from a local server instead (for example <code>python -m http.server</code>,
+      or the Live Server extension in VS Code) and open <code>http://localhost</code>.
+    </div>
 
-<input
-  type="text"
-  id="symptomInput"
-  placeholder="Enter symptom"
->
+    <form id="symptomForm" class="entry" autocomplete="off">
+      <label for="symptomInput" class="visually-hidden">Symptom</label>
+      <input
+        type="text"
+        id="symptomInput"
+        placeholder="For example: headache since morning"
+        maxlength="200"
+        required
+      >
+      <button type="submit" id="saveBtn">Save symptom</button>
+    </form>
 
-<button onclick="saveSymptom()">
-  Save
-</button>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
 
-<ul id="symptomList"></ul>
+    <section aria-labelledby="listHeading">
+      <h2 id="listHeading">Your symptoms <span id="count" class="count"></span></h2>
+      <ul id="symptomList" class="symptom-list"></ul>
+      <p id="emptyState" class="empty" hidden>Nothing saved yet. Type a symptom above and press Save symptom.</p>
+    </section>
+  </main>
 
-<script type="module" src="script.js"></script>
-
+  <script>
+    // Module scripts do not run from file:// URLs, so warn instead of failing silently.
+    if (location.protocol === "file:") {
+      document.getElementById("fileWarning").hidden = false;
+    }
+  </script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
